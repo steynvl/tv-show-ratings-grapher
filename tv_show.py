@@ -7,10 +7,10 @@ from urllib.parse import quote
 from collections import namedtuple
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import linregress
 
 
 def get_episodes(show_id):
-
     Episode = namedtuple('Episode', 'ep name rating votes')
 
     soup = BeautifulSoup(requests.get('http://www.imdb.com/title/{}/epdate'.format(show_id)).text, 'lxml')
@@ -42,15 +42,23 @@ def get_show_id(query):
     return show_id, show_name
 
 
+def apply_linear_regression(x, y):
+    slope, intercept, _, _, _ = linregress(x, y)
+    return slope, intercept
+
+
 def plot_data(episodes, show_name):
     x = np.arange(len(episodes))
     y = [np.float(ep.rating) for ep in episodes]
 
+    slope, intercept = apply_linear_regression(x, y)
+
     plt.figure()
-    plt.scatter(x, y)
-    plt.title('IMDB ratings of {}'.format(show_name))
-    plt.xlabel('Episode nr')
-    plt.ylabel('Rating')
+    plt.scatter(x, y, label='Every Episode')
+    plt.plot(x, intercept + slope*x, label='Linear Regression of all Episodes')
+    plt.title('{} IMDB ratings per episode'.format(show_name))
+    plt.xlabel('Episodes')
+    plt.ylabel('Rating per Episode')
 
     axes = plt.gca()
     axes.set_ylim([0, 10])
@@ -59,7 +67,6 @@ def plot_data(episodes, show_name):
 
 
 def main():
-
     name = ' '.join(sys.argv[1:]).strip()
     query = build_query(name)
 
