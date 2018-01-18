@@ -73,7 +73,7 @@ def main():
     info = get_show_id(query)
 
     if info is None:
-        sys.stderr.write('No results found for {}\n'.format(name))
+        print('No results found for {}\n'.format(name))
         sys.exit(1)
 
     show_id, show_name = info
@@ -81,7 +81,7 @@ def main():
     episodes = list(get_episodes(show_id))
 
     if episodes[0] is None:
-        sys.stderr.write('{} is not a tv show!\n'.format(name))
+        print('{} is not a tv show!'.format(name))
         sys.exit(1)
 
     plot_data(episodes, show_name)

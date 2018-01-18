@@ -6,6 +6,7 @@ A python script which can be ran with a TV show as command line argument and the
 
 It is assumed you have [python3](https://www.python.org/) installed along with the following third party libraries
 
+* [Requests](http://docs.python-requests.org/en/master/) - HTTP library for Python.
 * [NumPy](http://www.numpy.org/) - The fundamental package for scientific computing with Python.
 * [Matplotlib](https://matplotlib.org/) - Python 2D plotting library.
 * [SciPy](https://www.scipy.org/) - Fundamental library for scientific computing. 
